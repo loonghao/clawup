@@ -3,14 +3,23 @@ use color_eyre::Result;
 
 mod cli;
 mod error;
+
+// Legacy modules — will be replaced by clawup-core and clawup-ops.
+// See AGENTS.md "Known Technical Debt" section.
+#[allow(dead_code)]
 mod manifest;
+#[allow(dead_code)]
 mod openclaw;
+#[allow(dead_code)]
 mod utils;
 
-// Feature modules
+#[allow(dead_code)]
 mod agent;
+#[allow(dead_code)]
 mod profile;
+#[allow(dead_code)]
 mod skill;
+#[allow(dead_code)]
 mod soul;
 
 use cli::Cli;
