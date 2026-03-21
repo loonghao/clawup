@@ -25,7 +25,10 @@ pub fn execute(args: ApplyArgs) -> Result<()> {
     let paths = OpenClawPaths::detect()?;
 
     if args.dry_run {
-        println!("{} Dry run mode — no changes will be applied\n", style("ℹ").blue());
+        println!(
+            "{} Dry run mode — no changes will be applied\n",
+            style("ℹ").blue()
+        );
     }
 
     println!(
@@ -51,10 +54,16 @@ pub fn execute(args: ApplyArgs) -> Result<()> {
     }
 
     if args.dry_run {
-        println!("\n{} Dry run complete. No changes were made.", style("✓").green().bold());
+        println!(
+            "\n{} Dry run complete. No changes were made.",
+            style("✓").green().bold()
+        );
     } else {
         // TODO: Actually write configuration files
-        println!("\n{} Configuration applied successfully!", style("✓").green().bold());
+        println!(
+            "\n{} Configuration applied successfully!",
+            style("✓").green().bold()
+        );
     }
 
     Ok(())

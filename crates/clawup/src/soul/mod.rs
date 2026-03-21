@@ -7,13 +7,7 @@ use std::path::Path;
 use color_eyre::Result;
 
 /// Known soul file names.
-pub const SOUL_FILES: &[&str] = &[
-    "SOUL.md",
-    "IDENTITY.md",
-    "USER.md",
-    "AGENTS.md",
-    "BOOT.md",
-];
+pub const SOUL_FILES: &[&str] = &["SOUL.md", "IDENTITY.md", "USER.md", "AGENTS.md", "BOOT.md"];
 
 /// Read a soul file from a workspace directory.
 pub fn read_soul_file(workspace: &Path, filename: &str) -> Result<Option<String>> {

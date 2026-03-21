@@ -70,7 +70,10 @@ fn show_soul(agent: Option<&str>, file: Option<&str>) -> Result<()> {
         style(file_name).cyan(),
         style(agent_name).yellow()
     );
-    println!("{} Soul show is not yet fully implemented.", style("⚠").yellow());
+    println!(
+        "{} Soul show is not yet fully implemented.",
+        style("⚠").yellow()
+    );
 
     Ok(())
 }

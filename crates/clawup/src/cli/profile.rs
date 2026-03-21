@@ -47,14 +47,17 @@ fn list_profiles() -> Result<()> {
                     .get("description")
                     .and_then(|v| v.as_str())
                     .unwrap_or("");
-                println!("  {} {} {}", style("•").dim(), style(name).cyan(), style(desc).dim());
+                println!(
+                    "  {} {} {}",
+                    style("•").dim(),
+                    style(name).cyan(),
+                    style(desc).dim()
+                );
             }
         }
         _ => {
             println!("{} No profiles configured.", style("ℹ").blue());
-            println!(
-                "  Add profiles to clawup.toml under [profiles.<name>]"
-            );
+            println!("  Add profiles to clawup.toml under [profiles.<name>]");
         }
     }
 
@@ -71,7 +74,10 @@ fn switch_profile(name: &str) -> Result<()> {
                 style("✓").green().bold(),
                 style(name).cyan()
             );
-            println!("  Run {} to apply the profile.", style("clawup apply").cyan());
+            println!(
+                "  Run {} to apply the profile.",
+                style("clawup apply").cyan()
+            );
         } else {
             println!(
                 "{} Profile '{}' not found.",
@@ -108,6 +114,9 @@ fn create_profile(name: &str, from: Option<&str>) -> Result<()> {
             );
         }
     }
-    println!("{} Profile creation is not yet fully implemented.", style("⚠").yellow());
+    println!(
+        "{} Profile creation is not yet fully implemented.",
+        style("⚠").yellow()
+    );
     Ok(())
 }

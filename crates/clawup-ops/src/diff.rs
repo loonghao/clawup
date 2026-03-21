@@ -47,9 +47,7 @@ pub fn compute_diff(old: &str, new: &str) -> Vec<DiffLine> {
 /// Generate a unified diff string (like `diff -u`).
 pub fn unified_diff(old: &str, new: &str, old_label: &str, new_label: &str) -> String {
     let diff = TextDiff::from_lines(old, new);
-    diff.unified_diff()
-        .header(old_label, new_label)
-        .to_string()
+    diff.unified_diff().header(old_label, new_label).to_string()
 }
 
 /// Check if two configuration strings are identical.

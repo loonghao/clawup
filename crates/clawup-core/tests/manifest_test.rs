@@ -1,7 +1,7 @@
 //! Tests for `clawup_core::manifest` module (ManifestOps trait).
 
-use assert_fs::prelude::*;
 use assert_fs::TempDir;
+use assert_fs::prelude::*;
 use rstest::rstest;
 
 use clawup_core::manifest::ManifestOps;
@@ -115,10 +115,7 @@ fn load_toml_with_agent() {
     file.write_str(TOML_WITH_AGENT).unwrap();
 
     let manifest = Manifest::load(file.path()).unwrap();
-    assert_eq!(
-        manifest.meta.description.as_deref(),
-        Some("Test manifest")
-    );
+    assert_eq!(manifest.meta.description.as_deref(), Some("Test manifest"));
 
     let agent = manifest.find_agent("code").unwrap();
     assert_eq!(agent.role.as_deref(), Some("Engineer"));
@@ -155,10 +152,7 @@ fn save_and_reload_roundtrip() {
 
     let reloaded = Manifest::load(file.path()).unwrap();
     assert_eq!(reloaded.meta.schema_version, "1");
-    assert_eq!(
-        reloaded.meta.description.as_deref(),
-        Some("Roundtrip test")
-    );
+    assert_eq!(reloaded.meta.description.as_deref(), Some("Roundtrip test"));
 }
 
 #[rstest]

@@ -36,7 +36,10 @@ pub fn execute(args: InitArgs) -> Result<()> {
         };
 
         if !overwrite {
-            println!("{} Configuration already exists, skipping.", style("⚠").yellow());
+            println!(
+                "{} Configuration already exists, skipping.",
+                style("⚠").yellow()
+            );
             return Ok(());
         }
     }

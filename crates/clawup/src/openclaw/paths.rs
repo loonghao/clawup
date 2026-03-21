@@ -31,9 +31,7 @@ impl OpenClawPaths {
             }
             // Return the default path even if it doesn't exist yet
             // (for init/doctor commands)
-            return Ok(Self {
-                root: default_path,
-            });
+            return Ok(Self { root: default_path });
         }
 
         Err(ClawupError::OpenClawNotFound(

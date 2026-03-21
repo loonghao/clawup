@@ -31,12 +31,7 @@ pub trait ManifestOps {
     fn remove_agent(&mut self, name: &str) -> Result<(), CoreError>;
 
     /// Set a property on an agent.
-    fn set_agent_property(
-        &mut self,
-        name: &str,
-        key: &str,
-        value: &str,
-    ) -> Result<(), CoreError>;
+    fn set_agent_property(&mut self, name: &str, key: &str, value: &str) -> Result<(), CoreError>;
 
     // --- Skill operations ---
 
@@ -136,12 +131,7 @@ impl ManifestOps for Manifest {
         Ok(())
     }
 
-    fn set_agent_property(
-        &mut self,
-        name: &str,
-        key: &str,
-        value: &str,
-    ) -> Result<(), CoreError> {
+    fn set_agent_property(&mut self, name: &str, key: &str, value: &str) -> Result<(), CoreError> {
         let list = self
             .agents
             .as_mut()
@@ -160,10 +150,7 @@ impl ManifestOps for Manifest {
             "instructions" => agent.instructions = Some(value.to_string()),
             "workspace" => agent.workspace = Some(value.to_string()),
             _ => {
-                return Err(CoreError::Other(format!(
-                    "Unknown agent property: {}",
-                    key
-                )));
+                return Err(CoreError::Other(format!("Unknown agent property: {}", key)));
             }
         }
 
@@ -181,10 +168,7 @@ impl ManifestOps for Manifest {
         let entries = skills.entries.get_or_insert_with(Vec::new);
 
         if entries.iter().any(|s| s.name == name) {
-            return Err(CoreError::Other(format!(
-                "Skill '{}' already exists",
-                name
-            )));
+            return Err(CoreError::Other(format!("Skill '{}' already exists", name)));
         }
 
         entries.push(SkillEntry {
@@ -255,12 +239,10 @@ impl ManifestOps for Manifest {
                 self.meta.description = Some(value.to_string());
             }
             ["gateway", "mode"] => {
-                self.gateway.get_or_insert_with(Default::default).mode =
-                    Some(value.to_string());
+                self.gateway.get_or_insert_with(Default::default).mode = Some(value.to_string());
             }
             ["gateway", "bind"] => {
-                self.gateway.get_or_insert_with(Default::default).bind =
-                    Some(value.to_string());
+                self.gateway.get_or_insert_with(Default::default).bind = Some(value.to_string());
             }
             _ => {
                 return Err(CoreError::Other(format!(

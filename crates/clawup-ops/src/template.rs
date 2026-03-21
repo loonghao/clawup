@@ -148,9 +148,7 @@ fn multi_agent_template() -> Manifest {
                 AgentDefinition {
                     name: "ops".to_string(),
                     role: Some("DevOps Engineer".to_string()),
-                    instructions: Some(
-                        "Manage CI/CD, infrastructure, and deployments".to_string(),
-                    ),
+                    instructions: Some("Manage CI/CD, infrastructure, and deployments".to_string()),
                     model: None,
                     approval_mode: None,
                     max_turns: None,
