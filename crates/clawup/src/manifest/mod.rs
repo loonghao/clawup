@@ -44,16 +44,23 @@ impl Manifest {
                 description: None,
             },
             gateway: Some(Gateway {
-                provider: Some("openrouter".to_string()),
-                model: Some("anthropic/claude-sonnet-4".to_string()),
-                api_key_env: Some("OPENROUTER_API_KEY".to_string()),
-                base_url: None,
+                mode: Some("local".to_string()),
+                bind: Some("loopback".to_string()),
+                port: None,
+                auth: None,
+                reload: None,
+                tailscale: None,
             }),
+            models: None,
             agents: Some(AgentsConfig {
                 defaults: Some(AgentDefaults {
                     model: Some("anthropic/claude-sonnet-4".to_string()),
                     approval_mode: Some("auto-edit".to_string()),
                     max_turns: None,
+                    workspace: None,
+                    compaction: None,
+                    memory_search: None,
+                    sandbox: None,
                 }),
                 list: Some(vec![AgentDefinition {
                     name: "code".to_string(),
@@ -62,13 +69,19 @@ impl Manifest {
                     model: None,
                     approval_mode: None,
                     max_turns: None,
+                    workspace: None,
                     subagents: None,
                     sandbox: None,
                     identity: None,
+                    tools: None,
+                    compaction: None,
+                    memory_search: None,
                 }]),
             }),
+            tools: None,
             bindings: None,
             channels: None,
+            session: None,
             skills: Some(SkillsConfig {
                 bundled: Some(BundledSkills {
                     enabled: Some(vec!["developer".to_string(), "computer".to_string()]),
@@ -78,6 +91,7 @@ impl Manifest {
             }),
             cron: None,
             hooks: None,
+            discovery: None,
             profiles: None,
             env: None,
         }
@@ -90,16 +104,23 @@ impl Manifest {
                 description: None,
             },
             gateway: Some(Gateway {
-                provider: Some("openrouter".to_string()),
-                model: Some("anthropic/claude-sonnet-4".to_string()),
-                api_key_env: Some("OPENROUTER_API_KEY".to_string()),
-                base_url: None,
+                mode: Some("local".to_string()),
+                bind: Some("loopback".to_string()),
+                port: None,
+                auth: None,
+                reload: None,
+                tailscale: None,
             }),
+            models: None,
             agents: Some(AgentsConfig {
                 defaults: Some(AgentDefaults {
                     model: Some("anthropic/claude-sonnet-4".to_string()),
                     approval_mode: Some("auto-edit".to_string()),
                     max_turns: None,
+                    workspace: None,
+                    compaction: None,
+                    memory_search: None,
+                    sandbox: None,
                 }),
                 list: Some(vec![
                     AgentDefinition {
@@ -109,9 +130,13 @@ impl Manifest {
                         model: None,
                         approval_mode: None,
                         max_turns: None,
+                        workspace: None,
                         subagents: None,
                         sandbox: None,
                         identity: None,
+                        tools: None,
+                        compaction: None,
+                        memory_search: None,
                     },
                     AgentDefinition {
                         name: "review".to_string(),
@@ -120,9 +145,13 @@ impl Manifest {
                         model: None,
                         approval_mode: Some("suggest".to_string()),
                         max_turns: None,
+                        workspace: None,
                         subagents: None,
                         sandbox: None,
                         identity: None,
+                        tools: None,
+                        compaction: None,
+                        memory_search: None,
                     },
                     AgentDefinition {
                         name: "ops".to_string(),
@@ -131,12 +160,17 @@ impl Manifest {
                         model: None,
                         approval_mode: None,
                         max_turns: None,
+                        workspace: None,
                         subagents: None,
                         sandbox: None,
                         identity: None,
+                        tools: None,
+                        compaction: None,
+                        memory_search: None,
                     },
                 ]),
             }),
+            tools: None,
             bindings: Some(vec![
                 Binding {
                     pattern: Some("*.rs".to_string()),
@@ -150,6 +184,7 @@ impl Manifest {
                 },
             ]),
             channels: None,
+            session: None,
             skills: Some(SkillsConfig {
                 bundled: Some(BundledSkills {
                     enabled: Some(vec!["developer".to_string(), "computer".to_string()]),
@@ -159,6 +194,7 @@ impl Manifest {
             }),
             cron: None,
             hooks: None,
+            discovery: None,
             profiles: None,
             env: None,
         }
@@ -220,9 +256,13 @@ impl Manifest {
             model: model.map(|s| s.to_string()),
             approval_mode: None,
             max_turns: None,
+            workspace: None,
             subagents: None,
             sandbox: None,
             identity: None,
+            tools: None,
+            compaction: None,
+            memory_search: None,
         });
 
         Ok(())
@@ -263,6 +303,7 @@ impl Manifest {
             "model" => agent.model = Some(value.to_string()),
             "approval_mode" => agent.approval_mode = Some(value.to_string()),
             "instructions" => agent.instructions = Some(value.to_string()),
+            "workspace" => agent.workspace = Some(value.to_string()),
             _ => {
                 return Err(
                     ClawupError::Other(format!("Unknown agent property: {}", key)).into(),
@@ -352,20 +393,26 @@ impl Manifest {
         })
     }
 
-    /// Set a value by dot-notation key (limited to top-level gateway/meta fields for now).
+    /// Set a value by dot-notation key.
     pub fn set_value(&mut self, key: &str, value: &str) -> Result<()> {
         let parts: Vec<&str> = key.split('.').collect();
         match parts.as_slice() {
             ["meta", "description"] => {
                 self.meta.description = Some(value.to_string());
             }
-            ["gateway", "provider"] => {
-                self.gateway.get_or_insert_with(Default::default).provider =
+            ["gateway", "mode"] => {
+                self.gateway.get_or_insert_with(Default::default).mode =
                     Some(value.to_string());
             }
-            ["gateway", "model"] => {
-                self.gateway.get_or_insert_with(Default::default).model =
+            ["gateway", "bind"] => {
+                self.gateway.get_or_insert_with(Default::default).bind =
                     Some(value.to_string());
+            }
+            ["gateway", "port"] => {
+                let port: u16 = value.parse().map_err(|_| {
+                    ClawupError::Other(format!("Invalid port value: {}", value))
+                })?;
+                self.gateway.get_or_insert_with(Default::default).port = Some(port);
             }
             _ => {
                 return Err(

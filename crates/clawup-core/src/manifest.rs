@@ -108,9 +108,13 @@ impl ManifestOps for Manifest {
             model: model.map(|s| s.to_string()),
             approval_mode: None,
             max_turns: None,
+            workspace: None,
             subagents: None,
             sandbox: None,
             identity: None,
+            tools: None,
+            compaction: None,
+            memory_search: None,
         });
 
         Ok(())
@@ -154,6 +158,7 @@ impl ManifestOps for Manifest {
             "model" => agent.model = Some(value.to_string()),
             "approval_mode" => agent.approval_mode = Some(value.to_string()),
             "instructions" => agent.instructions = Some(value.to_string()),
+            "workspace" => agent.workspace = Some(value.to_string()),
             _ => {
                 return Err(CoreError::Other(format!(
                     "Unknown agent property: {}",
@@ -249,12 +254,13 @@ impl ManifestOps for Manifest {
             ["meta", "description"] => {
                 self.meta.description = Some(value.to_string());
             }
-            ["gateway", "provider"] => {
-                self.gateway.get_or_insert_with(Default::default).provider =
+            ["gateway", "mode"] => {
+                self.gateway.get_or_insert_with(Default::default).mode =
                     Some(value.to_string());
             }
-            ["gateway", "model"] => {
-                self.gateway.get_or_insert_with(Default::default).model = Some(value.to_string());
+            ["gateway", "bind"] => {
+                self.gateway.get_or_insert_with(Default::default).bind =
+                    Some(value.to_string());
             }
             _ => {
                 return Err(CoreError::Other(format!(

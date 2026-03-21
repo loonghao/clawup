@@ -27,3 +27,7 @@ thiserror = { workspace = true }
 
 # Logging
 tracing = { workspace = true }
+
+[dev-dependencies]
+rstest = { workspace = true }
+assert_fs = { workspace = true }
