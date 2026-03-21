@@ -62,19 +62,22 @@ fn list_skills() -> Result<()> {
 
     if !has_skills {
         println!("{} No skills configured.", style("ℹ").blue());
-        println!("  Run {} to add one.", style("clawup skill add <name>").cyan());
+        println!(
+            "  Run {} to add one.",
+            style("clawup skill add <name>").cyan()
+        );
         return Ok(());
     }
 
     let skills = manifest.skills.as_ref().unwrap();
 
     // Show bundled skills
-    if let Some(ref bundled) = skills.bundled {
-        if let Some(ref enabled) = bundled.enabled {
-            println!("{}", style("Bundled skills:").bold());
-            for s in enabled {
-                println!("  {} {}", style("✓").green(), s);
-            }
+    if let Some(ref bundled) = skills.bundled
+        && let Some(ref enabled) = bundled.enabled
+    {
+        println!("{}", style("Bundled skills:").bold());
+        for s in enabled {
+            println!("  {} {}", style("✓").green(), s);
         }
     }
 
@@ -141,6 +144,9 @@ fn update_skills(name: Option<&str>) -> Result<()> {
         Some(n) => println!("{} Updating skill '{}'...", style("→").cyan(), n),
         None => println!("{} Updating all skills...", style("→").cyan()),
     }
-    println!("{} Skill update is not yet implemented.", style("⚠").yellow());
+    println!(
+        "{} Skill update is not yet implemented.",
+        style("⚠").yellow()
+    );
     Ok(())
 }

@@ -103,9 +103,7 @@ fn test_full_manifest_roundtrip() {
                             text_weight: Some(0.3),
                         }),
                     }),
-                    sync: Some(MemorySearchSyncConfig {
-                        watch: Some(true),
-                    }),
+                    sync: Some(MemorySearchSyncConfig { watch: Some(true) }),
                 }),
                 sandbox: None,
             }),
@@ -319,10 +317,7 @@ fn test_full_manifest_roundtrip() {
         Some("~/.openclaw/agents/coder/workspace")
     );
     let tools = list[0].tools.as_ref().unwrap();
-    assert_eq!(
-        tools.allow.as_ref().unwrap(),
-        &["group:fs", "exec"]
-    );
+    assert_eq!(tools.allow.as_ref().unwrap(), &["group:fs", "exec"]);
 
     // Tools
     let tools_cfg = parsed.tools.as_ref().unwrap();
@@ -369,7 +364,10 @@ fn test_full_manifest_roundtrip() {
 
     // Discovery
     let discovery = parsed.discovery.as_ref().unwrap();
-    assert_eq!(discovery.mdns.as_ref().unwrap().mode.as_deref(), Some("minimal"));
+    assert_eq!(
+        discovery.mdns.as_ref().unwrap().mode.as_deref(),
+        Some("minimal")
+    );
     assert_eq!(discovery.wide_area.as_ref().unwrap().enabled, Some(true));
 
     // Bindings
@@ -452,10 +450,7 @@ anthropic = ["anthropic_api"]
 
     let providers = models.providers.unwrap();
     assert_eq!(providers.len(), 2);
-    assert_eq!(
-        providers["anthropic_api"].mode.as_deref(),
-        Some("api_key")
-    );
+    assert_eq!(providers["anthropic_api"].mode.as_deref(), Some("api_key"));
     assert_eq!(
         providers["openai"].base_url.as_deref(),
         Some("https://api.openai.com")
@@ -551,7 +546,10 @@ allow = ["group:fs", "sessions_list"]
         &["group:automation", "group:runtime"]
     );
     assert_eq!(tools.fs.as_ref().unwrap().workspace_only, Some(true));
-    assert_eq!(tools.exec.as_ref().unwrap().security.as_deref(), Some("deny"));
+    assert_eq!(
+        tools.exec.as_ref().unwrap().security.as_deref(),
+        Some("deny")
+    );
     assert_eq!(tools.exec.as_ref().unwrap().ask.as_deref(), Some("always"));
     assert_eq!(tools.elevated.as_ref().unwrap().enabled, Some(false));
 
@@ -718,10 +716,7 @@ allowed_agent_ids = ["hooks", "main"]
     assert_eq!(hooks.post_apply.unwrap(), vec!["echo post-apply"]);
     assert_eq!(hooks.pre_sync.unwrap(), vec!["echo pre-sync"]);
     assert_eq!(hooks.post_sync.unwrap(), vec!["echo post-sync"]);
-    assert_eq!(
-        hooks.allowed_agent_ids.unwrap(),
-        vec!["hooks", "main"]
-    );
+    assert_eq!(hooks.allowed_agent_ids.unwrap(), vec!["hooks", "main"]);
 }
 
 #[rstest]
@@ -739,7 +734,10 @@ enabled = true
     let manifest: Manifest = toml::from_str(toml_str).unwrap();
     let discovery = manifest.discovery.unwrap();
 
-    assert_eq!(discovery.mdns.as_ref().unwrap().mode.as_deref(), Some("minimal"));
+    assert_eq!(
+        discovery.mdns.as_ref().unwrap().mode.as_deref(),
+        Some("minimal")
+    );
     assert_eq!(discovery.wide_area.as_ref().unwrap().enabled, Some(true));
 }
 
@@ -765,10 +763,7 @@ enabled = true
     let skills = manifest.skills.unwrap();
 
     let bundled = skills.bundled.unwrap();
-    assert_eq!(
-        bundled.enabled.unwrap(),
-        vec!["developer", "computer"]
-    );
+    assert_eq!(bundled.enabled.unwrap(), vec!["developer", "computer"]);
 
     let community = skills.community.unwrap();
     assert_eq!(community.allow, Some(true));
@@ -864,10 +859,7 @@ fn test_json_serialization() {
 
     assert_eq!(parsed.meta.schema_version, "1");
     assert_eq!(parsed.meta.description.as_deref(), Some("JSON test"));
-    assert_eq!(
-        parsed.gateway.unwrap().mode.as_deref(),
-        Some("local")
-    );
+    assert_eq!(parsed.gateway.unwrap().mode.as_deref(), Some("local"));
 }
 
 // =============================================================================
@@ -992,9 +984,7 @@ fn test_memory_search_roundtrip() {
                 text_weight: Some(0.3),
             }),
         }),
-        sync: Some(MemorySearchSyncConfig {
-            watch: Some(true),
-        }),
+        sync: Some(MemorySearchSyncConfig { watch: Some(true) }),
     };
 
     let toml_str = toml::to_string(&mem).unwrap();
@@ -1013,10 +1003,7 @@ fn test_elevated_tools_with_allow_from() {
     let elevated = ToolsElevatedConfig {
         enabled: Some(true),
         allow_from: Some(HashMap::from([
-            (
-                "whatsapp".to_string(),
-                vec!["+15555550123".to_string()],
-            ),
+            ("whatsapp".to_string(), vec!["+15555550123".to_string()]),
             (
                 "discord".to_string(),
                 vec!["1234567890".to_string(), "9876543210".to_string()],

@@ -126,7 +126,9 @@ impl Manifest {
                     AgentDefinition {
                         name: "code".to_string(),
                         role: Some("Senior Software Engineer".to_string()),
-                        instructions: Some("Focus on clean, tested code with solid architecture".to_string()),
+                        instructions: Some(
+                            "Focus on clean, tested code with solid architecture".to_string(),
+                        ),
                         model: None,
                         approval_mode: None,
                         max_turns: None,
@@ -141,7 +143,9 @@ impl Manifest {
                     AgentDefinition {
                         name: "review".to_string(),
                         role: Some("Code Reviewer".to_string()),
-                        instructions: Some("Review PRs for correctness, style, and security".to_string()),
+                        instructions: Some(
+                            "Review PRs for correctness, style, and security".to_string(),
+                        ),
                         model: None,
                         approval_mode: Some("suggest".to_string()),
                         max_turns: None,
@@ -156,7 +160,9 @@ impl Manifest {
                     AgentDefinition {
                         name: "ops".to_string(),
                         role: Some("DevOps Engineer".to_string()),
-                        instructions: Some("Manage CI/CD, infrastructure, and deployments".to_string()),
+                        instructions: Some(
+                            "Manage CI/CD, infrastructure, and deployments".to_string(),
+                        ),
                         model: None,
                         approval_mode: None,
                         max_turns: None,
@@ -204,21 +210,39 @@ impl Manifest {
         let mut manifest = Self::multi_agent_template();
         manifest.profiles = Some(
             [
-                ("dev".to_string(), toml::Value::Table({
-                    let mut t = toml::map::Map::new();
-                    t.insert("description".to_string(), toml::Value::String("Development environment".to_string()));
-                    t
-                })),
-                ("staging".to_string(), toml::Value::Table({
-                    let mut t = toml::map::Map::new();
-                    t.insert("description".to_string(), toml::Value::String("Staging environment".to_string()));
-                    t
-                })),
-                ("production".to_string(), toml::Value::Table({
-                    let mut t = toml::map::Map::new();
-                    t.insert("description".to_string(), toml::Value::String("Production environment".to_string()));
-                    t
-                })),
+                (
+                    "dev".to_string(),
+                    toml::Value::Table({
+                        let mut t = toml::map::Map::new();
+                        t.insert(
+                            "description".to_string(),
+                            toml::Value::String("Development environment".to_string()),
+                        );
+                        t
+                    }),
+                ),
+                (
+                    "staging".to_string(),
+                    toml::Value::Table({
+                        let mut t = toml::map::Map::new();
+                        t.insert(
+                            "description".to_string(),
+                            toml::Value::String("Staging environment".to_string()),
+                        );
+                        t
+                    }),
+                ),
+                (
+                    "production".to_string(),
+                    toml::Value::Table({
+                        let mut t = toml::map::Map::new();
+                        t.insert(
+                            "description".to_string(),
+                            toml::Value::String("Production environment".to_string()),
+                        );
+                        t
+                    }),
+                ),
             ]
             .into_iter()
             .collect(),
@@ -304,11 +328,7 @@ impl Manifest {
             "approval_mode" => agent.approval_mode = Some(value.to_string()),
             "instructions" => agent.instructions = Some(value.to_string()),
             "workspace" => agent.workspace = Some(value.to_string()),
-            _ => {
-                return Err(
-                    ClawupError::Other(format!("Unknown agent property: {}", key)).into(),
-                )
-            }
+            _ => return Err(ClawupError::Other(format!("Unknown agent property: {}", key)).into()),
         }
 
         Ok(())
@@ -401,24 +421,23 @@ impl Manifest {
                 self.meta.description = Some(value.to_string());
             }
             ["gateway", "mode"] => {
-                self.gateway.get_or_insert_with(Default::default).mode =
-                    Some(value.to_string());
+                self.gateway.get_or_insert_with(Default::default).mode = Some(value.to_string());
             }
             ["gateway", "bind"] => {
-                self.gateway.get_or_insert_with(Default::default).bind =
-                    Some(value.to_string());
+                self.gateway.get_or_insert_with(Default::default).bind = Some(value.to_string());
             }
             ["gateway", "port"] => {
-                let port: u16 = value.parse().map_err(|_| {
-                    ClawupError::Other(format!("Invalid port value: {}", value))
-                })?;
+                let port: u16 = value
+                    .parse()
+                    .map_err(|_| ClawupError::Other(format!("Invalid port value: {}", value)))?;
                 self.gateway.get_or_insert_with(Default::default).port = Some(port);
             }
             _ => {
-                return Err(
-                    ClawupError::Other(format!("Setting key '{}' is not yet supported", key))
-                        .into(),
-                );
+                return Err(ClawupError::Other(format!(
+                    "Setting key '{}' is not yet supported",
+                    key
+                ))
+                .into());
             }
         }
         Ok(())

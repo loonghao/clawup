@@ -2,8 +2,8 @@
 
 use std::fs;
 
-use assert_fs::prelude::*;
 use assert_fs::TempDir;
+use assert_fs::prelude::*;
 use rstest::rstest;
 
 use clawup_core::fs::{ensure_dir, expand_path, read_optional};

@@ -88,6 +88,9 @@ fn merge_config(path: &str) -> Result<()> {
         style("→").cyan(),
         style(path).cyan()
     );
-    println!("{} Config merge is not yet implemented.", style("⚠").yellow());
+    println!(
+        "{} Config merge is not yet implemented.",
+        style("⚠").yellow()
+    );
     Ok(())
 }

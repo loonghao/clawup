@@ -51,7 +51,9 @@ pub enum AgentCommands {
 pub fn execute(cmd: AgentCommands) -> Result<()> {
     match cmd {
         AgentCommands::List => list_agents(),
-        AgentCommands::Add { name, role, model } => add_agent(&name, role.as_deref(), model.as_deref()),
+        AgentCommands::Add { name, role, model } => {
+            add_agent(&name, role.as_deref(), model.as_deref())
+        }
         AgentCommands::Remove { name } => remove_agent(&name),
         AgentCommands::Show { name } => show_agent(&name),
         AgentCommands::Set { name, key, value } => set_agent(&name, &key, &value),
@@ -61,14 +63,11 @@ pub fn execute(cmd: AgentCommands) -> Result<()> {
 fn list_agents() -> Result<()> {
     let manifest = Manifest::load("clawup.toml")?;
 
-    let agents = manifest
-        .agents
-        .as_ref()
-        .and_then(|a| a.list.as_ref());
+    let agents = manifest.agents.as_ref().and_then(|a| a.list.as_ref());
 
     match agents {
         Some(list) if !list.is_empty() => {
-            use comfy_table::{Table, ContentArrangement};
+            use comfy_table::{ContentArrangement, Table};
 
             let mut table = Table::new();
             table
@@ -78,10 +77,14 @@ fn list_agents() -> Result<()> {
             let defaults = manifest.agents.as_ref().and_then(|a| a.defaults.as_ref());
 
             for agent in list {
-                let model = agent.model.as_deref()
+                let model = agent
+                    .model
+                    .as_deref()
                     .or(defaults.and_then(|d| d.model.as_deref()))
                     .unwrap_or("-");
-                let approval = agent.approval_mode.as_deref()
+                let approval = agent
+                    .approval_mode
+                    .as_deref()
                     .or(defaults.and_then(|d| d.approval_mode.as_deref()))
                     .unwrap_or("-");
 
@@ -97,7 +100,10 @@ fn list_agents() -> Result<()> {
         }
         _ => {
             println!("{} No agents configured.", style("ℹ").blue());
-            println!("  Run {} to add one.", style("clawup agent add <name>").cyan());
+            println!(
+                "  Run {} to add one.",
+                style("clawup agent add <name>").cyan()
+            );
         }
     }
 

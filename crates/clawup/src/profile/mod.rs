@@ -6,8 +6,6 @@ use std::path::Path;
 
 use color_eyre::Result;
 
-use crate::error::ClawupError;
-
 /// Profile state file name.
 const PROFILE_STATE_FILE: &str = ".clawup-profile";
 

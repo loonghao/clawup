@@ -15,6 +15,8 @@ pub struct DiffArgs {
 
 pub fn execute(_args: DiffArgs) -> Result<()> {
     println!("{} Diff is not yet implemented.", style("⚠").yellow());
-    println!("  This will show differences between your clawup.toml and the applied OpenClaw config.");
+    println!(
+        "  This will show differences between your clawup.toml and the applied OpenClaw config."
+    );
     Ok(())
 }

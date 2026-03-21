@@ -3,8 +3,6 @@
 //! Handles agent workspace scaffolding, subagent configuration,
 //! and agent-specific file generation.
 
-use std::path::Path;
-
 use color_eyre::Result;
 
 use crate::manifest::AgentDefinition;
@@ -43,18 +41,13 @@ fn generate_soul_content(agent: &AgentDefinition) -> String {
         .as_deref()
         .unwrap_or("Follow best practices and write clean code.");
 
-    format!(
-        "# Soul\n\nYou are a {role}.\n\n## Instructions\n\n{instructions}\n"
-    )
+    format!("# Soul\n\nYou are a {role}.\n\n## Instructions\n\n{instructions}\n")
 }
 
 /// Generate IDENTITY.md content for an agent.
 fn generate_identity_content(agent: &AgentDefinition) -> String {
     let identity = agent.identity.as_ref().unwrap();
-    let name = identity
-        .name
-        .as_deref()
-        .unwrap_or(&agent.name);
+    let name = identity.name.as_deref().unwrap_or(&agent.name);
     let persona = identity
         .persona
         .as_deref()
@@ -79,10 +72,10 @@ pub fn list_workspaces(paths: &OpenClawPaths) -> Result<Vec<String>> {
     let mut names = vec![];
     for entry in std::fs::read_dir(&agents_dir)? {
         let entry = entry?;
-        if entry.file_type()?.is_dir() {
-            if let Some(name) = entry.file_name().to_str() {
-                names.push(name.to_string());
-            }
+        if entry.file_type()?.is_dir()
+            && let Some(name) = entry.file_name().to_str()
+        {
+            names.push(name.to_string());
         }
     }
     Ok(names)
