@@ -92,16 +92,16 @@ source = "~/.openclaw/skills/my-custom-skill"
 
 ```bash
 # Build
-just build
+vx just build
 
 # Test
-just test
+vx just test
 
 # Lint
-just lint
+vx just lint
 
 # Run
-just run --help
+vx just run --help
 ```
 
 ## License
