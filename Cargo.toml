@@ -37,7 +37,7 @@ console = "0.15"
 comfy-table = "7"
 
 # Git
-git2 = "0.19"
+git2 = { version = "0.19", features = ["vendored-openssl"] }
 
 # Filesystem & Paths
 dirs = "6"
