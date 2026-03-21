@@ -1,6 +1,3 @@
 {
-  "crates/clawup": "0.1.0",
-  "crates/clawup-schema": "0.1.0",
-  "crates/clawup-core": "0.1.0",
-  "crates/clawup-ops": "0.1.0"
+  ".": "0.1.0"
 }

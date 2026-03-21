@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "packages": {
-    "crates/clawup": {
-      "release-type": "rust",
+    ".": {
+      "release-type": "simple",
       "component": "clawup",
       "include-v-in-tag": true,
       "draft": false,
@@ -10,6 +10,9 @@
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": true,
       "changelog-path": "CHANGELOG.md",
+      "extra-files": [
+        "Cargo.toml"
+      ],
       "changelog-sections": [
         {
           "type": "feat",
@@ -61,93 +64,7 @@
           "section": "CI",
           "hidden": true
         }
-      ],
-      "extra-files": []
-    },
-    "crates/clawup-schema": {
-      "release-type": "rust",
-      "component": "clawup-schema",
-      "include-v-in-tag": true,
-      "draft": false,
-      "prerelease": false,
-      "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": true,
-      "changelog-path": "CHANGELOG.md",
-      "extra-files": []
-    },
-    "crates/clawup-core": {
-      "release-type": "rust",
-      "component": "clawup-core",
-      "include-v-in-tag": true,
-      "draft": false,
-      "prerelease": false,
-      "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": true,
-      "changelog-path": "CHANGELOG.md",
-      "extra-files": []
-    },
-    "crates/clawup-ops": {
-      "release-type": "rust",
-      "component": "clawup-ops",
-      "include-v-in-tag": true,
-      "draft": false,
-      "prerelease": false,
-      "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": true,
-      "changelog-path": "CHANGELOG.md",
-      "extra-files": []
+      ]
     }
-  },
-  "changelog-sections": [
-    {
-      "type": "feat",
-      "section": "🚀 Features",
-      "hidden": false
-    },
-    {
-      "type": "fix",
-      "section": "🐛 Bug Fixes",
-      "hidden": false
-    },
-    {
-      "type": "perf",
-      "section": "⚡ Performance Improvements",
-      "hidden": false
-    },
-    {
-      "type": "deps",
-      "section": "📦 Dependencies",
-      "hidden": false
-    },
-    {
-      "type": "docs",
-      "section": "📚 Documentation",
-      "hidden": false
-    },
-    {
-      "type": "chore",
-      "section": "🔧 Miscellaneous",
-      "hidden": false
-    },
-    {
-      "type": "style",
-      "section": "Styles",
-      "hidden": true
-    },
-    {
-      "type": "refactor",
-      "section": "Code Refactoring",
-      "hidden": true
-    },
-    {
-      "type": "test",
-      "section": "Tests",
-      "hidden": true
-    },
-    {
-      "type": "ci",
-      "section": "CI",
-      "hidden": true
-    }
-  ]
+  }
 }
