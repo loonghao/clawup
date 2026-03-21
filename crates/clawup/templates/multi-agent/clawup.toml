@@ -1,0 +1,39 @@
+[meta]
+schema_version = "1"
+description = "{{ description }}"
+
+[gateway]
+provider = "openrouter"
+model = "anthropic/claude-sonnet-4"
+api_key_env = "OPENROUTER_API_KEY"
+
+[agents.defaults]
+model = "anthropic/claude-sonnet-4"
+approval_mode = "auto-edit"
+
+[[agents.list]]
+name = "code"
+role = "Senior Software Engineer"
+instructions = "Focus on clean, tested code with solid architecture"
+
+[[agents.list]]
+name = "review"
+role = "Code Reviewer"
+instructions = "Review PRs for correctness, performance, and security"
+approval_mode = "suggest"
+
+[[agents.list]]
+name = "ops"
+role = "DevOps Engineer"
+instructions = "Manage CI/CD, infrastructure, and deployments"
+
+[[bindings]]
+pattern = "*.rs"
+agent = "code"
+
+[[bindings]]
+pattern = "*.yml"
+agent = "ops"
+
+[skills.bundled]
+enabled = ["developer", "computer"]

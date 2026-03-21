@@ -1,0 +1,20 @@
+[meta]
+schema_version = "1"
+description = "{{ description }}"
+
+[gateway]
+provider = "openrouter"
+model = "anthropic/claude-sonnet-4"
+api_key_env = "OPENROUTER_API_KEY"
+
+[agents.defaults]
+model = "anthropic/claude-sonnet-4"
+approval_mode = "auto-edit"
+
+[[agents.list]]
+name = "code"
+role = "Software Engineer"
+instructions = "Write clean, well-tested code following best practices"
+
+[skills.bundled]
+enabled = ["developer", "computer"]

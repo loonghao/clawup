@@ -1,0 +1,58 @@
+[workspace]
+resolver = "2"
+members = ["crates/clawup"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/loonghao/clawup"
+authors = ["Hal <hal.long@outlook.com>"]
+
+[workspace.dependencies]
+# CLI
+clap = { version = "4", features = ["derive", "env", "wrap_help"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+json5 = "0.4"
+
+# Templating
+tera = "1"
+
+# Diff
+similar = { version = "2", features = ["inline"] }
+
+# TUI / UX
+dialoguer = { version = "0.11", features = ["fuzzy-select"] }
+indicatif = "0.17"
+console = "0.15"
+comfy-table = "7"
+
+# Git
+git2 = "0.19"
+
+# Filesystem & Paths
+dirs = "6"
+shellexpand = "3"
+walkdir = "2"
+globset = "0.4"
+
+# Error handling
+color-eyre = "0.6"
+thiserror = "2"
+
+# Environment
+dotenvy = "0.15"
+
+# Testing
+rstest = "0.25"
+assert_fs = "1"
+assert_cmd = "2"
+predicates = "3"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
