@@ -1,0 +1,34 @@
+[package]
+name = "clawup-ops"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "High-level operations for clawup: agent, skill, soul, profile, template, and diff"
+
+[dependencies]
+clawup-schema = { path = "../clawup-schema" }
+clawup-core = { path = "../clawup-core" }
+
+# Serialization
+serde = { workspace = true }
+toml = { workspace = true }
+
+# Templating
+tera = { workspace = true }
+
+# Diff
+similar = { workspace = true }
+
+# Git
+git2 = { workspace = true }
+
+# Filesystem
+walkdir = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+
+# Logging
+tracing = { workspace = true }

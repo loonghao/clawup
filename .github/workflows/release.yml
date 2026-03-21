@@ -1,0 +1,20 @@
+# Release workflow using rust-actions-toolkit v4 reusable workflow
+# Triggered when release-please creates a version tag (e.g., v0.1.0)
+# See: https://github.com/loonghao/rust-actions-toolkit
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    uses: loonghao/rust-actions-toolkit/.github/workflows/reusable-release.yml@v4
+    with:
+      rust-toolchain: stable
+      # Binary name auto-detected from Cargo.toml if not specified
+      binary-name: "clawup"

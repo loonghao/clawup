@@ -1,6 +1,11 @@
 [workspace]
 resolver = "2"
-members = ["crates/clawup"]
+members = [
+    "crates/clawup-schema",
+    "crates/clawup-core",
+    "crates/clawup-ops",
+    "crates/clawup",
+]
 
 [workspace.package]
 version = "0.1.0"

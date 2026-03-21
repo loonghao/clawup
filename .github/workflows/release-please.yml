@@ -1,0 +1,31 @@
+# Automated release management using release-please
+# - On push to main: creates/updates a release PR with version bump and changelog
+# - When release PR is merged: creates GitHub release with tag
+# - Tag creation triggers release.yml for cross-platform binary builds
+# See: https://github.com/googleapis/release-please-action
+name: Release Please
+
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release-please:
+    name: Release Please
+    runs-on: ubuntu-latest
+    if: ${{ github.event.repository.fork == false }}
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - name: Run release-please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.RELEASE_PLZ_TOKEN || secrets.GITHUB_TOKEN }}

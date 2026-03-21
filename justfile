@@ -39,6 +39,17 @@ run *ARGS:
 # Check everything (format, lint, test)
 check: fmt-check lint test
 
+# Check documentation builds without warnings
+doc:
+    vx cargo doc --workspace --all-features --no-deps
+
+# Check documentation with warnings as errors
+doc-check:
+    RUSTDOCFLAGS="-D warnings" vx cargo doc --workspace --all-features --no-deps --document-private-items
+
+# Run all CI checks locally (mirrors GitHub Actions)
+ci: fmt-check lint doc-check test
+
 # Clean build artifacts
 clean:
     vx cargo clean

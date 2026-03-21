@@ -1,0 +1,20 @@
+# CI workflow using rust-actions-toolkit v4 reusable workflow
+# See: https://github.com/loonghao/rust-actions-toolkit
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: loonghao/rust-actions-toolkit/.github/workflows/reusable-ci.yml@v4
+    with:
+      rust-toolchain: stable
+      # Enable security audit
+      enable-audit: true
