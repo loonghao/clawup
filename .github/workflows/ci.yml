@@ -10,11 +10,11 @@ on:
 
 permissions:
   contents: read
+  actions: read
+  security-events: write
 
 jobs:
   ci:
     uses: loonghao/rust-actions-toolkit/.github/workflows/reusable-ci.yml@v4
     with:
       rust-toolchain: stable
-      # Enable security audit
-      enable-audit: true
