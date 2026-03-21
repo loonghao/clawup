@@ -1,6 +1,10 @@
 use thiserror::Error;
 
 /// Unified error type for clawup.
+///
+/// Some variants are used only by legacy modules that will be replaced
+/// by clawup-core / clawup-ops. See AGENTS.md "Known Technical Debt".
+#[allow(dead_code)]
 #[derive(Error, Debug)]
 pub enum ClawupError {
     #[error("Configuration file not found: {0}")]
