@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/loonghao/clawup/compare/v0.1.7...v0.1.8) (2026-03-22)
+
+
+### 🚀 Features
+
+* add SHA256 checksum verification to install scripts and release workflow ([689b65b](https://github.com/loonghao/clawup/commit/689b65b07a89fb5dadef4fae1f6a02fcad0d3445))
+
 ## [0.1.7](https://github.com/loonghao/clawup/compare/v0.1.6...v0.1.7) (2026-03-22)
 
 
