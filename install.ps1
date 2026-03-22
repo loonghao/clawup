@@ -64,6 +64,22 @@ function Install-Clawup {
         New-Item -ItemType Directory -Path $installDir -Force | Out-Null
     }
 
+    # Check for existing installation
+    $oldVersion = $null
+    $existingBinary = Join-Path $installDir "$BinaryName.exe"
+    if (Test-Path $existingBinary) {
+        try {
+            $oldVersionOutput = & $existingBinary --version 2>&1 | Select-Object -First 1
+            $oldVersion = ($oldVersionOutput -split '\s+')[1]
+            if ($oldVersion) {
+                Write-Info "Found existing installation: clawup v$oldVersion"
+            }
+        }
+        catch {
+            # Ignore errors from old binary
+        }
+    }
+
     # Create temp directory
     $tmpDir = Join-Path ([System.IO.Path]::GetTempPath()) "clawup-install-$([System.Guid]::NewGuid().ToString('N').Substring(0,8))"
     New-Item -ItemType Directory -Path $tmpDir -Force | Out-Null
@@ -122,6 +138,11 @@ function Install-Clawup {
         Copy-Item -Path $binaryPath.FullName -Destination $destPath -Force
 
         Write-Success "clawup v$version installed to $destPath"
+
+        # Show upgrade info if applicable
+        if ($oldVersion -and $oldVersion -ne $version) {
+            Write-Success "Upgraded: v$oldVersion → v$version"
+        }
 
         # Check if install_dir is in PATH
         $userPath = [System.Environment]::GetEnvironmentVariable("Path", "User")

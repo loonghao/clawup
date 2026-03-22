@@ -176,6 +176,15 @@ main() {
     install_dir="${CLAWUP_INSTALL:-$HOME/.clawup/bin}"
     mkdir -p "$install_dir"
 
+    # Check for existing installation
+    old_version=""
+    if [ -f "${install_dir}/${BINARY_NAME}" ]; then
+        old_version=$("${install_dir}/${BINARY_NAME}" --version 2>/dev/null | head -1 | awk '{print $2}' || true)
+        if [ -n "$old_version" ]; then
+            info "Found existing installation: clawup v${old_version}"
+        fi
+    fi
+
     # Create temp directory
     tmp_dir=$(mktemp -d)
     trap 'rm -rf "$tmp_dir"' EXIT
@@ -261,6 +270,11 @@ main() {
     mv "$binary_path" "${install_dir}/${BINARY_NAME}"
 
     success "clawup v${version} installed to ${install_dir}/${BINARY_NAME}"
+
+    # Show upgrade info if applicable
+    if [ -n "$old_version" ] && [ "$old_version" != "$version" ]; then
+        success "Upgraded: v${old_version} → v${version}"
+    fi
 
     # Check if install_dir is in PATH
     case ":${PATH}:" in

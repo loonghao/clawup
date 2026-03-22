@@ -38,12 +38,12 @@
         {
           "type": "docs",
           "section": "📚 Documentation",
-          "hidden": false
+          "hidden": true
         },
         {
           "type": "chore",
           "section": "🔧 Miscellaneous",
-          "hidden": false
+          "hidden": true
         },
         {
           "type": "style",
