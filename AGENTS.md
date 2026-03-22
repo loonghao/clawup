@@ -263,8 +263,8 @@ for automated version management.
 | File | Trigger | Purpose |
 |------|---------|---------|
 | `.github/workflows/ci.yml` | PR to `main`, push to `main`/`develop` | Code quality + cross-platform tests (reusable-ci.yml@v4) |
-| `.github/workflows/release.yml` | Tag push `v*` | Build 8 platform binaries + upload to GitHub Release (reusable-release.yml@v4) |
-| `.github/workflows/release-please.yml` | Push to `main` | Auto version bump PR, changelog generation, GitHub Release creation |
+| `.github/workflows/release.yml` | Tag push `v*` OR `workflow_dispatch` | Build 8 platform binaries + upload to GitHub Release (reusable-release.yml@v4) |
+| `.github/workflows/release-please.yml` | Push to `main` | Auto version bump PR, changelog generation, GitHub Release creation, then dispatches release.yml |
 | `release-please-config.json` | — | Per-package release-please configuration (Rust workspace) |
 | `.release-please-manifest.json` | — | Version manifest tracking current versions of all crates |
 
@@ -273,8 +273,14 @@ for automated version management.
 ```
 Push to main → release-please creates/updates Release PR (version bump + changelog)
              → On merge: creates GitHub Release + v* tag
-             → v* tag triggers release.yml → builds binaries for 8 platforms
+             → release-please.yml dispatches release.yml (via workflow_dispatch on the tag ref)
+             → release.yml builds binaries for 8 platforms and uploads to GitHub Release
 ```
+
+> **Note**: Tags created by `GITHUB_TOKEN` do not trigger other workflows (GitHub limitation).
+> The `release-please.yml` workflow explicitly dispatches `release.yml` via the GitHub API
+> to work around this. If `RELEASE_PLZ_TOKEN` (a PAT) is configured, the tag push will also
+> trigger `release.yml` directly as a redundant safeguard.
 
 ### Conventional Commits
 

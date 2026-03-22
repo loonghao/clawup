@@ -1,5 +1,7 @@
 # Release workflow using rust-actions-toolkit v4 reusable workflow
-# Triggered when release-please creates a version tag (e.g., v0.1.0)
+# Triggered by:
+#   1. Tag push matching v* (manual tag push or PAT-based release-please)
+#   2. Workflow dispatch from release-please.yml after creating a GitHub Release
 # See: https://github.com/loonghao/rust-actions-toolkit
 name: Release
 
@@ -7,6 +9,7 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 permissions:
   contents: write
