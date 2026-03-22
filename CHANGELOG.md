@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/loonghao/clawup/compare/v0.1.5...v0.1.6) (2026-03-22)
+
+
+### 🐛 Bug Fixes
+
+* **ci:** rewrite release workflow for reliable cross-platform builds ([512dc1e](https://github.com/loonghao/clawup/commit/512dc1ed02f6937b51a37d81baf30e74fa1923fc))
+
 ## [0.1.5](https://github.com/loonghao/clawup/compare/v0.1.4...v0.1.5) (2026-03-22)
 
 
