@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/loonghao/clawup/compare/v0.1.3...v0.1.4) (2026-03-22)
+
+
+### 🐛 Bug Fixes
+
+* **ci:** dispatch release workflow after release-please creates a release ([9f41d89](https://github.com/loonghao/clawup/commit/9f41d89e44521225c23577f75d0a0047a4f4edcb))
+
 ## [0.1.3](https://github.com/loonghao/clawup/compare/v0.1.2...v0.1.3) (2026-03-22)
 
 
