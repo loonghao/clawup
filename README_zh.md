@@ -1,6 +1,6 @@
 # 🦀 clawup
 
-> 就像 `rustup`，但用于 [OpenClaw](https://github.com/claw-project/openclaw)。一个 Rust CLI 工具，用于管理 OpenClaw 的配置、Agents、Skills、Soul 和 Profiles。
+> 就像 `rustup`，但用于 [OpenClaw](https://openclaw.ai/)。一个 Rust CLI 工具，用于管理 OpenClaw 的配置、Agents、Skills、Soul 和 Profiles。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 

@@ -1,6 +1,6 @@
 # 🦀 clawup
 
-> Like `rustup`, but for [OpenClaw](https://github.com/claw-project/openclaw). A Rust CLI tool for managing OpenClaw configurations, agents, skills, souls, and profiles.
+> Like `rustup`, but for [OpenClaw](https://openclaw.ai/). A Rust CLI tool for managing OpenClaw configurations, agents, skills, souls, and profiles.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
