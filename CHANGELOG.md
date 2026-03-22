@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/loonghao/clawup/compare/v0.1.8...v0.1.9) (2026-03-22)
+
+
+### 🐛 Bug Fixes
+
+* prevent docs/chore commits from triggering releases and add upgrade detection to install scripts ([5844727](https://github.com/loonghao/clawup/commit/5844727128630842e38b4308b263574358ef93d0))
+
 ## [0.1.8](https://github.com/loonghao/clawup/compare/v0.1.7...v0.1.8) (2026-03-22)
 
 
