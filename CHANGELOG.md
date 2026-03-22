@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/loonghao/clawup/compare/v0.1.6...v0.1.7) (2026-03-22)
+
+
+### 🐛 Bug Fixes
+
+* upgrade GitHub Actions to v6 and improve install scripts ([50f9b6b](https://github.com/loonghao/clawup/commit/50f9b6bef92a833d9ff87ef64e8394d2dfbc75c9))
+
 ## [0.1.6](https://github.com/loonghao/clawup/compare/v0.1.5...v0.1.6) (2026-03-22)
 
 
