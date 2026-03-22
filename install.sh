@@ -3,7 +3,7 @@
 # Usage: curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
 #
 # Environment variables:
-#   CLAWUP_VERSION  - Specific version to install (e.g., "0.1.4"). Default: latest
+#   CLAWUP_VERSION  - Specific version to install (e.g., "0.1.6"). Default: latest
 #   CLAWUP_INSTALL  - Installation directory. Default: $HOME/.clawup/bin
 #   CLAWUP_MUSL     - Set to "1" to prefer musl build on Linux. Default: auto-detect
 

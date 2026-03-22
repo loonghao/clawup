@@ -2,8 +2,9 @@
 # Usage: irm https://raw.githubusercontent.com/loonghao/clawup/main/install.ps1 | iex
 #
 # Environment variables:
-#   CLAWUP_VERSION  - Specific version to install (e.g., "0.1.4"). Default: latest
+#   CLAWUP_VERSION  - Specific version to install (e.g., "0.1.6"). Default: latest
 #   CLAWUP_INSTALL  - Installation directory. Default: $HOME\.clawup\bin
+#   CLAWUP_NO_PATH  - Set to "1" to skip adding to PATH. Default: auto-add
 
 $ErrorActionPreference = 'Stop'
 
@@ -99,17 +100,16 @@ function Install-Clawup {
         # Check if install_dir is in PATH
         $userPath = [System.Environment]::GetEnvironmentVariable("Path", "User")
         if ($userPath -notlike "*$installDir*") {
-            Write-Host ""
-            Write-Warn "'$installDir' is not in your PATH."
-            Write-Host ""
-            Write-Host "  To add it permanently, run:" -ForegroundColor Gray
-            Write-Host ""
-            Write-Host "    [Environment]::SetEnvironmentVariable('Path', `"$installDir;`" + [Environment]::GetEnvironmentVariable('Path', 'User'), 'User')" -ForegroundColor Cyan
-            Write-Host ""
-
-            # Offer to add to PATH automatically
-            $addToPath = Read-Host "  Add to PATH now? (y/N)"
-            if ($addToPath -eq 'y' -or $addToPath -eq 'Y') {
+            if ($env:CLAWUP_NO_PATH -eq "1") {
+                Write-Host ""
+                Write-Warn "'$installDir' is not in your PATH."
+                Write-Host ""
+                Write-Host "  To add it permanently, run:" -ForegroundColor Gray
+                Write-Host ""
+                Write-Host "    [Environment]::SetEnvironmentVariable('Path', `"$installDir;`" + [Environment]::GetEnvironmentVariable('Path', 'User'), 'User')" -ForegroundColor Cyan
+                Write-Host ""
+            }
+            else {
                 [System.Environment]::SetEnvironmentVariable("Path", "$installDir;" + $userPath, "User")
                 $env:Path = "$installDir;$env:Path"
                 Write-Success "Added $installDir to user PATH"

@@ -53,12 +53,13 @@ irm https://raw.githubusercontent.com/loonghao/clawup/main/install.ps1 | iex
 | `CLAWUP_VERSION` | Specific version to install | `latest` |
 | `CLAWUP_INSTALL` | Installation directory | `~/.clawup/bin` |
 | `CLAWUP_MUSL` | Prefer musl build on Linux | auto-detect |
+| `CLAWUP_NO_PATH` | Skip auto-adding to PATH (Windows) | `0` |
 
 Example with options:
 
 ```bash
 # Install specific version
-CLAWUP_VERSION=0.1.4 curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
+CLAWUP_VERSION=0.1.6 curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
 
 # Install to custom directory
 CLAWUP_INSTALL=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
