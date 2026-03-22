@@ -32,9 +32,58 @@ clawup doctor
 
 ## Installation
 
+### Quick Install (Recommended)
+
+**Linux / macOS:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
+```
+
+**Windows (PowerShell):**
+
+```powershell
+irm https://raw.githubusercontent.com/loonghao/clawup/main/install.ps1 | iex
+```
+
+### Install Options
+
+| Environment Variable | Description | Default |
+|---------------------|-------------|---------|
+| `CLAWUP_VERSION` | Specific version to install | `latest` |
+| `CLAWUP_INSTALL` | Installation directory | `~/.clawup/bin` |
+| `CLAWUP_MUSL` | Prefer musl build on Linux | auto-detect |
+
+Example with options:
+
+```bash
+# Install specific version
+CLAWUP_VERSION=0.1.4 curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
+
+# Install to custom directory
+CLAWUP_INSTALL=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
+```
+
+### From Source
+
 ```bash
 cargo install clawup
 ```
+
+### Pre-built Binaries
+
+Download pre-built binaries from [GitHub Releases](https://github.com/loonghao/clawup/releases).
+
+| Platform | Architecture | Target |
+|----------|-------------|--------|
+| Linux | x86_64 | `x86_64-unknown-linux-gnu` |
+| Linux | x86_64 (static) | `x86_64-unknown-linux-musl` |
+| Linux | ARM64 | `aarch64-unknown-linux-gnu` |
+| Linux | ARM64 (static) | `aarch64-unknown-linux-musl` |
+| macOS | Intel | `x86_64-apple-darwin` |
+| macOS | Apple Silicon | `aarch64-apple-darwin` |
+| Windows | x86_64 | `x86_64-pc-windows-msvc` |
+| Windows | ARM64 | `aarch64-pc-windows-msvc` |
 
 ## Configuration
 

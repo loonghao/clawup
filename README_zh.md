@@ -32,9 +32,58 @@ clawup doctor
 
 ## 安装
 
+### 一键安装（推荐）
+
+**Linux / macOS：**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
+```
+
+**Windows (PowerShell)：**
+
+```powershell
+irm https://raw.githubusercontent.com/loonghao/clawup/main/install.ps1 | iex
+```
+
+### 安装选项
+
+| 环境变量 | 描述 | 默认值 |
+|---------|------|-------|
+| `CLAWUP_VERSION` | 指定安装版本 | `latest` |
+| `CLAWUP_INSTALL` | 安装目录 | `~/.clawup/bin` |
+| `CLAWUP_MUSL` | 在 Linux 上优先使用 musl 构建 | 自动检测 |
+
+使用示例：
+
+```bash
+# 安装指定版本
+CLAWUP_VERSION=0.1.4 curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
+
+# 安装到自定义目录
+CLAWUP_INSTALL=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
+```
+
+### 从源码安装
+
 ```bash
 cargo install clawup
 ```
+
+### 预构建二进制文件
+
+从 [GitHub Releases](https://github.com/loonghao/clawup/releases) 下载预构建的二进制文件。
+
+| 平台 | 架构 | 目标 |
+|------|-----|------|
+| Linux | x86_64 | `x86_64-unknown-linux-gnu` |
+| Linux | x86_64 (静态) | `x86_64-unknown-linux-musl` |
+| Linux | ARM64 | `aarch64-unknown-linux-gnu` |
+| Linux | ARM64 (静态) | `aarch64-unknown-linux-musl` |
+| macOS | Intel | `x86_64-apple-darwin` |
+| macOS | Apple Silicon | `aarch64-apple-darwin` |
+| Windows | x86_64 | `x86_64-pc-windows-msvc` |
+| Windows | ARM64 | `aarch64-pc-windows-msvc` |
 
 ## 配置
 
