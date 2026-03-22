@@ -2,7 +2,7 @@
 # Usage: irm https://raw.githubusercontent.com/loonghao/clawup/main/install.ps1 | iex
 #
 # Environment variables:
-#   CLAWUP_VERSION  - Specific version to install (e.g., "0.1.7"). Default: latest
+#   CLAWUP_VERSION  - Specific version to install (e.g., "0.1.8"). Default: latest
 #   CLAWUP_INSTALL  - Installation directory. Default: $HOME\.clawup\bin
 #   CLAWUP_NO_PATH  - Set to "1" to skip adding to PATH. Default: auto-add
 
