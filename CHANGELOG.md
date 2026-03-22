@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.5](https://github.com/loonghao/clawup/compare/v0.1.4...v0.1.5) (2026-03-22)
+
+
+### 🚀 Features
+
+* add install scripts + fix release workflow dispatch ([#9](https://github.com/loonghao/clawup/issues/9)) ([2ded0e1](https://github.com/loonghao/clawup/commit/2ded0e1b3b491f2ae7efcf928ed90146c28d209c))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** use macos-14 runner and disable python wheels in release workflow ([2cf3bf0](https://github.com/loonghao/clawup/commit/2cf3bf08cffe32a8318649c20950a1c87bf3d0c7))
+
 ## [0.1.4](https://github.com/loonghao/clawup/compare/v0.1.3...v0.1.4) (2026-03-22)
 
 
