@@ -59,7 +59,7 @@ Example with options:
 
 ```bash
 # Install specific version
-CLAWUP_VERSION=0.1.8 curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
+CLAWUP_VERSION=0.1.9 curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
 
 # Install to custom directory
 CLAWUP_INSTALL=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
