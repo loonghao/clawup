@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.1.3](https://github.com/loonghao/clawup/compare/v0.1.2...v0.1.3) (2026-03-22)
+
+
+### 🚀 Features
+
+* add clawup-schema, clawup-core, clawup-ops crates and AGENTS.md ([211b326](https://github.com/loonghao/clawup/commit/211b32644ca7c0e77e7c4e0fb46cf0966a9c49e4))
+* initial project scaffold for clawup CLI ([3a46ed4](https://github.com/loonghao/clawup/commit/3a46ed41992bbd5766d0fe30552f54f0398ad603))
+* **schema:** add complete OpenClaw configuration coverage ([a67e21b](https://github.com/loonghao/clawup/commit/a67e21b855e8ad5514c7ada1c8d55aa8c53108e0))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** disable empty release-consistency matrix to fix CI failure ([7f3d4d5](https://github.com/loonghao/clawup/commit/7f3d4d5b267e114bbf00ed092e44114b72d2b0aa))
+* **ci:** exclude component name from release tag to trigger release workflow ([94947aa](https://github.com/loonghao/clawup/commit/94947aa7f3782e0a400c7ccc177ce7d939ee4dd7))
+* **deps:** enable vendored-openssl for git2 to fix musl cross-compilation ([307c724](https://github.com/loonghao/clawup/commit/307c7246f0bd8399e713ac7f6df5e1c1e40272e2))
+* **lint:** suppress dead_code warnings for legacy modules ([536234d](https://github.com/loonghao/clawup/commit/536234d853eaaa236c93b8e65fb8295c4cb8a835))
+* resolve release-please workspace version error and fix docs ([bd4b735](https://github.com/loonghao/clawup/commit/bd4b7355317436ed5089dd63cf6c4bc22840b904))
+
+
+### 🔧 Miscellaneous
+
+* **main:** release clawup 0.1.1 ([7f0e864](https://github.com/loonghao/clawup/commit/7f0e8648b7dc8b26da30252508c73ed97399ac4e))
+* **main:** release clawup 0.1.2 ([9eab56b](https://github.com/loonghao/clawup/commit/9eab56b80af797d35ed1e40b124183206acf14b7))
+
 ## [0.1.2](https://github.com/loonghao/clawup/compare/clawup-v0.1.1...clawup-v0.1.2) (2026-03-21)
 
 
