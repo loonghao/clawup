@@ -2,7 +2,7 @@
 # Usage: irm https://raw.githubusercontent.com/loonghao/clawup/main/install.ps1 | iex
 #
 # Environment variables:
-#   CLAWUP_VERSION  - Specific version to install (e.g., "0.1.6"). Default: latest
+#   CLAWUP_VERSION  - Specific version to install (e.g., "0.1.7"). Default: latest
 #   CLAWUP_INSTALL  - Installation directory. Default: $HOME\.clawup\bin
 #   CLAWUP_NO_PATH  - Set to "1" to skip adding to PATH. Default: auto-add
 
@@ -79,6 +79,32 @@ function Install-Clawup {
         }
         catch {
             Write-Err "Download failed. Check if v$version has pre-built binaries for $target. Error: $_"
+        }
+
+        # Verify SHA256 checksum if available
+        $checksumsUrl = "https://github.com/$Repo/releases/download/v$version/checksums-sha256.txt"
+        $checksumsPath = Join-Path $tmpDir "checksums-sha256.txt"
+        try {
+            Invoke-WebRequest -Uri $checksumsUrl -OutFile $checksumsPath -UseBasicParsing -ErrorAction Stop
+            Write-Info "Verifying SHA256 checksum..."
+            $checksumLines = Get-Content $checksumsPath
+            $expectedLine = $checksumLines | Where-Object { $_ -match [regex]::Escape($archiveName) }
+            if ($expectedLine) {
+                $expectedHash = ($expectedLine -split '\s+')[0]
+                $actualHash = (Get-FileHash -Path $archivePath -Algorithm SHA256).Hash.ToLower()
+                if ($actualHash -eq $expectedHash) {
+                    Write-Success "Checksum verified ✓"
+                }
+                else {
+                    Write-Err "Checksum mismatch! Expected: $expectedHash, Got: $actualHash"
+                }
+            }
+            else {
+                Write-Warn "Checksum not found for $archiveName, skipping verification"
+            }
+        }
+        catch {
+            Write-Warn "Checksums file not available, skipping verification"
         }
 
         # Extract

@@ -3,7 +3,7 @@
 # Usage: curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
 #
 # Environment variables:
-#   CLAWUP_VERSION  - Specific version to install (e.g., "0.1.6"). Default: latest
+#   CLAWUP_VERSION  - Specific version to install (e.g., "0.1.7"). Default: latest
 #   CLAWUP_INSTALL  - Installation directory. Default: $HOME/.clawup/bin
 #   CLAWUP_MUSL     - Set to "1" to prefer musl build on Linux. Default: auto-detect
 
@@ -195,6 +195,36 @@ main() {
 
     info "Downloading ${download_url}..."
     download "$download_url" "$archive_path" || error "Download failed. Check if v${version} has pre-built binaries for ${target}."
+
+    # Verify SHA256 checksum if available
+    checksums_url="https://github.com/${REPO}/releases/download/v${version}/checksums-sha256.txt"
+    checksums_path="${tmp_dir}/checksums-sha256.txt"
+    if download "$checksums_url" "$checksums_path" 2>/dev/null; then
+        info "Verifying SHA256 checksum..."
+        expected_hash=$(grep "${archive_name}" "$checksums_path" | awk '{print $1}')
+        if [ -n "$expected_hash" ]; then
+            if check_cmd sha256sum; then
+                actual_hash=$(sha256sum "$archive_path" | awk '{print $1}')
+            elif check_cmd shasum; then
+                actual_hash=$(shasum -a 256 "$archive_path" | awk '{print $1}')
+            else
+                warn "Neither sha256sum nor shasum found, skipping checksum verification"
+                actual_hash=""
+            fi
+
+            if [ -n "$actual_hash" ]; then
+                if [ "$actual_hash" = "$expected_hash" ]; then
+                    success "Checksum verified ✓"
+                else
+                    error "Checksum mismatch! Expected: ${expected_hash}, Got: ${actual_hash}"
+                fi
+            fi
+        else
+            warn "Checksum not found for ${archive_name}, skipping verification"
+        fi
+    else
+        warn "Checksums file not available, skipping verification"
+    fi
 
     # Extract
     info "Extracting..."

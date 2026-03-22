@@ -59,7 +59,7 @@ irm https://raw.githubusercontent.com/loonghao/clawup/main/install.ps1 | iex
 
 ```bash
 # 安装指定版本
-CLAWUP_VERSION=0.1.6 curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
+CLAWUP_VERSION=0.1.7 curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
 
 # 安装到自定义目录
 CLAWUP_INSTALL=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/loonghao/clawup/main/install.sh | sh
