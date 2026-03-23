@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/loonghao/clawup/compare/v0.1.10...v0.1.11) (2026-03-23)
+
+
+### 🐛 Bug Fixes
+
+* resolve all v0.1.9 test bugs — checksums format, bundled skill toggle, profile create, config merge, non-TTY init ([e9b961b](https://github.com/loonghao/clawup/commit/e9b961be06f83c2e23d9883f205d437a441035a2))
+
 ## [0.1.10](https://github.com/loonghao/clawup/compare/v0.1.9...v0.1.10) (2026-03-23)
 
 
