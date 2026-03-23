@@ -468,6 +468,155 @@ fn toggle_skill_returns_error_for_unknown_skill() {
 }
 
 // =============================================================================
+// Bundled skill toggle tests (Bug #3 fix)
+// =============================================================================
+
+/// Create a Manifest with bundled skills (no custom entries).
+fn manifest_with_bundled_skills() -> Manifest {
+    let mut m = minimal_manifest();
+    m.skills = Some(SkillsConfig {
+        bundled: Some(BundledSkills {
+            enabled: Some(vec!["developer".to_string(), "computer".to_string()]),
+        }),
+        community: None,
+        entries: None,
+    });
+    m
+}
+
+/// Create a Manifest with both bundled and custom skills.
+fn manifest_with_bundled_and_custom_skills() -> Manifest {
+    let mut m = minimal_manifest();
+    m.skills = Some(SkillsConfig {
+        bundled: Some(BundledSkills {
+            enabled: Some(vec!["developer".to_string(), "computer".to_string()]),
+        }),
+        community: None,
+        entries: Some(vec![SkillEntry {
+            name: "linter".to_string(),
+            source: Some("https://example.com/linter".to_string()),
+            enabled: Some(true),
+            config: None,
+        }]),
+    });
+    m
+}
+
+#[rstest]
+fn toggle_bundled_skill_disable() {
+    let mut manifest = manifest_with_bundled_skills();
+
+    manifest.toggle_skill("developer", false).unwrap();
+
+    let bundled = manifest.skills.unwrap().bundled.unwrap();
+    let enabled = bundled.enabled.unwrap();
+    assert!(!enabled.contains(&"developer".to_string()));
+    assert!(enabled.contains(&"computer".to_string()));
+}
+
+#[rstest]
+fn toggle_bundled_skill_enable_already_present() {
+    let mut manifest = manifest_with_bundled_skills();
+
+    // "developer" is already enabled, toggling enable should be a no-op
+    manifest.toggle_skill("developer", true).unwrap();
+
+    let bundled = manifest.skills.unwrap().bundled.unwrap();
+    let enabled = bundled.enabled.unwrap();
+    assert!(enabled.contains(&"developer".to_string()));
+    // Should not have duplicates
+    assert_eq!(enabled.iter().filter(|s| *s == "developer").count(), 1);
+}
+
+#[rstest]
+fn toggle_bundled_skill_disable_and_reenable() {
+    let mut manifest = manifest_with_bundled_skills();
+
+    manifest.toggle_skill("computer", false).unwrap();
+    {
+        let bundled = manifest.skills.as_ref().unwrap().bundled.as_ref().unwrap();
+        assert!(
+            !bundled
+                .enabled
+                .as_ref()
+                .unwrap()
+                .contains(&"computer".to_string())
+        );
+    }
+
+    manifest.toggle_skill("computer", true).unwrap();
+    {
+        let bundled = manifest.skills.as_ref().unwrap().bundled.as_ref().unwrap();
+        assert!(
+            bundled
+                .enabled
+                .as_ref()
+                .unwrap()
+                .contains(&"computer".to_string())
+        );
+    }
+}
+
+#[rstest]
+fn toggle_bundled_skill_not_found_returns_error() {
+    let mut manifest = manifest_with_bundled_skills();
+
+    // "nonexistent" is not in bundled.enabled and not in entries
+    let result = manifest.toggle_skill("nonexistent", false);
+    assert!(result.is_err());
+}
+
+#[rstest]
+fn toggle_custom_skill_preferred_over_bundled() {
+    let mut manifest = manifest_with_bundled_and_custom_skills();
+
+    // Toggle "linter" (custom entry) — should modify entries, not bundled
+    manifest.toggle_skill("linter", false).unwrap();
+
+    let skills = manifest.skills.unwrap();
+    let entries = skills.entries.unwrap();
+    assert_eq!(entries[0].enabled, Some(false));
+    // Bundled should remain unchanged
+    let bundled = skills.bundled.unwrap();
+    assert_eq!(bundled.enabled.unwrap().len(), 2);
+}
+
+#[rstest]
+fn toggle_bundled_skill_when_custom_entries_also_exist() {
+    let mut manifest = manifest_with_bundled_and_custom_skills();
+
+    // Toggle "developer" (bundled) — should fall through custom entries and modify bundled
+    manifest.toggle_skill("developer", false).unwrap();
+
+    let skills = manifest.skills.unwrap();
+    // Custom entries should be untouched
+    let entries = skills.entries.unwrap();
+    assert_eq!(entries[0].name, "linter");
+    assert_eq!(entries[0].enabled, Some(true));
+    // Bundled should have "developer" removed
+    let bundled = skills.bundled.unwrap();
+    let enabled = bundled.enabled.unwrap();
+    assert!(!enabled.contains(&"developer".to_string()));
+    assert!(enabled.contains(&"computer".to_string()));
+}
+
+#[rstest]
+fn toggle_bundled_skill_save_and_reload() {
+    let tmp = TempDir::new().unwrap();
+    let file = tmp.child("clawup.toml");
+
+    let mut manifest = manifest_with_bundled_skills();
+    manifest.toggle_skill("developer", false).unwrap();
+    manifest.save(file.path()).unwrap();
+
+    let reloaded = Manifest::load(file.path()).unwrap();
+    let bundled = reloaded.skills.unwrap().bundled.unwrap();
+    let enabled = bundled.enabled.unwrap();
+    assert!(!enabled.contains(&"developer".to_string()));
+    assert!(enabled.contains(&"computer".to_string()));
+}
+
+// =============================================================================
 // Config value get/set tests
 // =============================================================================
 

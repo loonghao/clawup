@@ -123,11 +123,17 @@ jobs:
           cd artifacts
           find . -type f \( -name "*.tar.gz" -o -name "*.zip" \) -exec sh -c '
             for f; do
-              sha256sum "$f" | sed "s|  \./[^/]*/||"
+              hash=$(sha256sum "$f" | cut -d" " -f1)
+              name=$(basename "$f")
+              printf "%s  %s\n" "$hash" "$name"
             done
-          ' sh {} + | sort > ../checksums-sha256.txt
+          ' sh {} + | sort -k2 > ../checksums-sha256.txt
           cd ..
+          echo "=== checksums-sha256.txt ==="
           cat checksums-sha256.txt
+          echo "=== Verifying format (hash<two-spaces>filename) ==="
+          awk '{ if (NF != 2 || length($1) != 64) { print "ERROR: malformed line: " $0; exit 1 } }' checksums-sha256.txt
+          echo "Format OK ✓"
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2

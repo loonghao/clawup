@@ -378,19 +378,37 @@ impl Manifest {
 
     /// Enable or disable a skill.
     pub fn toggle_skill(&mut self, name: &str, enabled: bool) -> Result<()> {
-        let entries = self
-            .skills
-            .as_mut()
-            .and_then(|s| s.entries.as_mut())
-            .ok_or_else(|| ClawupError::SkillNotFound(name.to_string()))?;
+        // First, try to find in custom entries
+        if let Some(ref mut skills) = self.skills {
+            if let Some(ref mut entries) = skills.entries
+                && let Some(entry) = entries.iter_mut().find(|s| s.name == name)
+            {
+                entry.enabled = Some(enabled);
+                return Ok(());
+            }
 
-        let entry = entries
-            .iter_mut()
-            .find(|s| s.name == name)
-            .ok_or_else(|| ClawupError::SkillNotFound(name.to_string()))?;
+            // Then, try bundled skills
+            if let Some(ref mut bundled) = skills.bundled {
+                let enabled_list = bundled.enabled.get_or_insert_with(Vec::new);
+                let is_bundled = enabled_list.iter().any(|s| s == name);
 
-        entry.enabled = Some(enabled);
-        Ok(())
+                if enabled {
+                    // Enable: add to bundled enabled list if not already there
+                    if !is_bundled {
+                        enabled_list.push(name.to_string());
+                    }
+                    return Ok(());
+                } else {
+                    // Disable: remove from bundled enabled list
+                    if is_bundled {
+                        enabled_list.retain(|s| s != name);
+                        return Ok(());
+                    }
+                }
+            }
+        }
+
+        Err(ClawupError::SkillNotFound(name.to_string()).into())
     }
 
     // --- Config value operations ---

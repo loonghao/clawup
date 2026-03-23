@@ -106,7 +106,13 @@ function Install-Clawup {
             $checksumLines = Get-Content $checksumsPath
             $expectedLine = $checksumLines | Where-Object { $_ -match [regex]::Escape($archiveName) }
             if ($expectedLine) {
-                $expectedHash = ($expectedLine -split '\s+')[0]
+                # Support both standard "hash  filename" and legacy "hashfilename" formats
+                if ($expectedLine -match '^\s*([0-9a-fA-F]{64})\s+') {
+                    $expectedHash = $Matches[1].ToLower()
+                } else {
+                    # Legacy format: hash directly concatenated with filename
+                    $expectedHash = ($expectedLine -replace [regex]::Escape($archiveName), '').Trim().ToLower()
+                }
                 $actualHash = (Get-FileHash -Path $archivePath -Algorithm SHA256).Hash.ToLower()
                 if ($actualHash -eq $expectedHash) {
                     Write-Success "Checksum verified ✓"

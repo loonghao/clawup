@@ -210,7 +210,15 @@ main() {
     checksums_path="${tmp_dir}/checksums-sha256.txt"
     if download "$checksums_url" "$checksums_path" 2>/dev/null; then
         info "Verifying SHA256 checksum..."
-        expected_hash=$(grep "${archive_name}" "$checksums_path" | awk '{print $1}')
+        # Extract expected hash — supports both standard "hash  filename" and legacy "hashfilename"
+        checksum_line=$(grep "${archive_name}" "$checksums_path" | head -1)
+        if echo "$checksum_line" | grep -q '  '; then
+            # Standard sha256sum format: "<hash>  <filename>"
+            expected_hash=$(echo "$checksum_line" | awk '{print $1}')
+        else
+            # Legacy format: hash directly concatenated with filename (no separator)
+            expected_hash=$(echo "$checksum_line" | sed "s/${archive_name}//")
+        fi
         if [ -n "$expected_hash" ]; then
             if check_cmd sha256sum; then
                 actual_hash=$(sha256sum "$archive_path" | awk '{print $1}')

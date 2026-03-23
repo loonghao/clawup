@@ -2,6 +2,7 @@ use clap::Args;
 use color_eyre::Result;
 use console::style;
 use dialoguer::{Confirm, Input, Select};
+use std::io::IsTerminal;
 use std::path::Path;
 
 use crate::manifest::Manifest;
@@ -25,8 +26,17 @@ pub fn execute(args: InitArgs) -> Result<()> {
     let target = Path::new(&args.path);
     let config_path = target.join("clawup.toml");
 
+    // Auto-detect non-TTY environment and gracefully degrade
+    let non_interactive = args.non_interactive || !std::io::stdin().is_terminal();
+    if non_interactive && !args.non_interactive {
+        eprintln!(
+            "{} Non-TTY environment detected, using non-interactive mode.",
+            style("ℹ").blue()
+        );
+    }
+
     if config_path.exists() {
-        let overwrite = if args.non_interactive {
+        let overwrite = if non_interactive {
             false
         } else {
             Confirm::new()
@@ -46,7 +56,7 @@ pub fn execute(args: InitArgs) -> Result<()> {
 
     let template = if let Some(t) = args.template {
         t
-    } else if args.non_interactive {
+    } else if non_interactive {
         "default".to_string()
     } else {
         let templates = vec!["default (single agent)", "multi-agent", "team"];
@@ -63,7 +73,7 @@ pub fn execute(args: InitArgs) -> Result<()> {
         }
     };
 
-    let description = if args.non_interactive {
+    let description = if non_interactive {
         "My OpenClaw setup".to_string()
     } else {
         Input::new()

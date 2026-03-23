@@ -97,26 +97,61 @@ fn switch_profile(name: &str) -> Result<()> {
 }
 
 fn create_profile(name: &str, from: Option<&str>) -> Result<()> {
-    match from {
-        Some(base) => {
+    let mut manifest = Manifest::load("clawup.toml")?;
+
+    let profiles = manifest
+        .profiles
+        .get_or_insert_with(std::collections::HashMap::new);
+
+    // Check if profile already exists
+    if profiles.contains_key(name) {
+        println!(
+            "{} Profile '{}' already exists.",
+            style("✗").red(),
+            style(name).cyan()
+        );
+        return Ok(());
+    }
+
+    let new_profile = if let Some(base) = from {
+        // Clone from existing profile
+        if let Some(base_profile) = profiles.get(base).cloned() {
             println!(
                 "{} Creating profile '{}' based on '{}'...",
                 style("→").cyan(),
                 style(name).cyan(),
                 style(base).yellow()
             );
-        }
-        None => {
+            base_profile
+        } else {
             println!(
-                "{} Creating profile '{}'...",
-                style("→").cyan(),
-                style(name).cyan()
+                "{} Base profile '{}' not found.",
+                style("✗").red(),
+                style(base).cyan()
             );
+            return Ok(());
         }
-    }
+    } else {
+        println!(
+            "{} Creating profile '{}'...",
+            style("→").cyan(),
+            style(name).cyan()
+        );
+        // Create an empty profile as a TOML table
+        toml::Value::Table(toml::map::Map::new())
+    };
+
+    profiles.insert(name.to_string(), new_profile);
+    manifest.save("clawup.toml")?;
+
     println!(
-        "{} Profile creation is not yet fully implemented.",
-        style("⚠").yellow()
+        "{} Profile '{}' created successfully.",
+        style("✓").green().bold(),
+        style(name).cyan()
+    );
+    println!(
+        "  Edit it in clawup.toml under {}",
+        style(format!("[profiles.{}]", name)).cyan()
     );
     Ok(())
 }

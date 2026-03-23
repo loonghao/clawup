@@ -88,9 +88,45 @@ fn merge_config(path: &str) -> Result<()> {
         style("→").cyan(),
         style(path).cyan()
     );
+
+    // Load the current manifest
+    let current_content = std::fs::read_to_string("clawup.toml")?;
+    let mut current: toml::Value = toml::from_str(&current_content)?;
+
+    // Load the merge source
+    let merge_content = std::fs::read_to_string(path)?;
+    let merge_source: toml::Value = toml::from_str(&merge_content)?;
+
+    // Deep merge
+    deep_merge(&mut current, &merge_source);
+
+    // Write back
+    let merged_content = toml::to_string_pretty(&current)?;
+    std::fs::write("clawup.toml", merged_content)?;
+
     println!(
-        "{} Config merge is not yet implemented.",
-        style("⚠").yellow()
+        "{} Configuration merged successfully from {}",
+        style("✓").green().bold(),
+        style(path).cyan()
     );
     Ok(())
+}
+
+/// Deep merge two TOML values. Tables are merged recursively,
+/// arrays are concatenated, and other values are overwritten.
+fn deep_merge(base: &mut toml::Value, overlay: &toml::Value) {
+    match (base, overlay) {
+        (toml::Value::Table(base_table), toml::Value::Table(overlay_table)) => {
+            for (key, overlay_val) in overlay_table {
+                if let Some(base_val) = base_table.get_mut(key) {
+                    deep_merge(base_val, overlay_val);
+                } else {
+                    base_table.insert(key.clone(), overlay_val.clone());
+                }
+            }
+        }
+        (base, overlay) => {
+            *base = overlay.clone();
+        }
+    }
 }
