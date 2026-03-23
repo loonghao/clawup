@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/loonghao/clawup/compare/v0.1.9...v0.1.10) (2026-03-23)
+
+
+### 🚀 Features
+
+* implement export and diff commands with JSON/TOML support ([84651d4](https://github.com/loonghao/clawup/commit/84651d42a113e50e69a7b549c9b43bb94dc4163e))
+
 ## [0.1.9](https://github.com/loonghao/clawup/compare/v0.1.8...v0.1.9) (2026-03-22)
 
 
