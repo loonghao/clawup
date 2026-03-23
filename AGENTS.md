@@ -238,8 +238,8 @@ OpenClaw uses markdown "soul files" to define agent personality. Known files:
 | `clawup profile list\|switch\|create` | ⚠️ Partial | Profile switching |
 | `clawup config get\|set\|show\|merge` | ✅ Most | Configuration operations |
 | `clawup sync` | ❌ Stub | Git sync (not yet implemented) |
-| `clawup diff` | ❌ Stub | Configuration diff (not yet implemented) |
-| `clawup export` | ❌ Stub | Configuration export (not yet implemented) |
+| `clawup diff` | ✅ Implemented | Configuration diff (compare files or vs template) |
+| `clawup export` | ✅ Implemented | Configuration export (JSON, TOML) |
 
 ## Known Technical Debt
 
