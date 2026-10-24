@@ -34,7 +34,7 @@ jobs:
           version: "0.9.33"
           cache: false
       - name: Build without publishing
-        run: vx cargo build --locked --release -p clawup --target ${{ matrix.target }}
+        run: vx cargo build --release -p clawup --target ${{ matrix.target }}
       - name: Verify native architecture and record minimum OS
         shell: bash
         env:
@@ -45,6 +45,6 @@ jobs:
           binary="target/$TARGET/release/clawup"
           test "$(uname -m)" = "$EXPECTED_ARCH"
           file "$binary"
-          lipo -verify_arch "$EXPECTED_ARCH" "$binary"
+          lipo "$binary" -verify_arch "$EXPECTED_ARCH"
           xcrun vtool -show-build "$binary"
           "$binary" --version
